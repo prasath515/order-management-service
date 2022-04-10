@@ -4,7 +4,6 @@ import com.ecart.ordermanagementservice.model.Cart;
 import com.ecart.ordermanagementservice.model.CartEmptyAction;
 import com.ecart.ordermanagementservice.model.CartItems;
 import com.ecart.ordermanagementservice.model.CustomResponse;
-import com.ecart.ordermanagementservice.model.Warehouse;
 
 public interface CartService {
 	
@@ -14,6 +13,6 @@ public interface CartService {
 	
 	CustomResponse clearCart(CartEmptyAction action);
 	
-	CustomResponse calculatePrice(Warehouse warehouse);
+	CustomResponse calculatePrice(long postal_code);
 
 }

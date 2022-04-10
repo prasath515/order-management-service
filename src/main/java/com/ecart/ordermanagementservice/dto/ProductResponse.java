@@ -24,5 +24,4 @@ public class ProductResponse {
 		this.product = product;
 	}
 	
-	
 }

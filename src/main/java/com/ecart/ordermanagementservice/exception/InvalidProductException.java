@@ -36,6 +36,5 @@ public class InvalidProductException extends RuntimeException {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 	
 }

@@ -1,5 +1,6 @@
 package com.ecart.ordermanagementservice.service.serviceImpl;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import com.ecart.ordermanagementservice.dto.ProductDto;
 import com.ecart.ordermanagementservice.dto.ProductResponse;
 import com.ecart.ordermanagementservice.exception.CustomException;
@@ -42,7 +45,7 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private RestTemplate restTemplate;
-
+	
 	@Override
 	public CustomResponse addToCart(Cart cart) {
 		CustomResponse response = null;
@@ -107,13 +110,14 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public CustomResponse calculatePrice(Warehouse warehouse) {
+	public CustomResponse calculatePrice(long postal_code) {
 	    Map<String, Double> map = getCartPriceAfterDiscountAndTotalWeight();
 	     if(!map.isEmpty()) {
-		    double shippingCost = findShippingCost(warehouse.getPostal_code(),map.get("totalWeight"));
+		    double shippingCost = findShippingCost(postal_code,map.get("totalWeight"));
 		    CustomResponse customResponse = new CustomResponse();
 		    customResponse.setStatus("success");
-		    customResponse.setMessage("Total value of your shopping cart is - $"+(map.get("totalPriceAfterDiscount")+shippingCost));
+		    DecimalFormat df = new DecimalFormat("0.00");
+		    customResponse.setMessage("Total value of your shopping cart is - $"+df.format(map.get("totalPriceAfterDiscount")+shippingCost));
 		    return customResponse;
 	     }else {
 	    	 return new CustomResponse("success","Cart is empty.");
@@ -136,14 +140,13 @@ public class CartServiceImpl implements CartService {
 							"https://e-commerce-api-recruitment.herokuapp.com/product/" + cart.getProduct_id(),
 							HttpMethod.GET, entity, ProductResponse.class);
 					Product product = response.getBody().getProduct();
-					double price = product.getPrice() * cart.getQuantity();
 					double discount_price = 0;
 					if (product.getDiscount_percentage() > 0) {
-						discount_price = ((product.getDiscount_percentage() / 100) * price);
+						discount_price = (product.getDiscount_percentage()/100) * product.getPrice();
 					}
-					totalPriceAfterDiscount += (price - discount_price);
+					totalPriceAfterDiscount += ((product.getPrice() - discount_price) * cart.getQuantity());
 					if(product.getWeight_in_grams()>0) {
-						totalWeight += product.getWeight_in_grams(); 
+						totalWeight += (product.getWeight_in_grams() * cart.getQuantity()); 
 					}
 				} catch (Exception ex) {
 					ex.printStackTrace();

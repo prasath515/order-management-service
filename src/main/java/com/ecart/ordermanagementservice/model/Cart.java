@@ -15,6 +15,7 @@ public class Cart {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private long id;
 	
 	private long product_id;
@@ -45,5 +46,4 @@ public class Cart {
 		this.quantity = quantity;
 	}
 
-	
 }

@@ -36,6 +36,4 @@ public class CartItems {
 		this.items = items;
 	}
 
-	
-
 }

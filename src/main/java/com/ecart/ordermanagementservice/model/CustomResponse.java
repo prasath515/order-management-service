@@ -34,6 +34,4 @@ public class CustomResponse {
 		this.message = message;
 	}
 	
-	
-
 }

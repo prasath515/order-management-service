@@ -22,6 +22,4 @@ public class Warehouse {
 		this.distance_in_kilometers = distance_in_kilometers;
 	}
 	
-	
-
 }

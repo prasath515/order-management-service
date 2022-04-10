@@ -12,5 +12,4 @@ public interface CartRepository extends JpaRepository<Cart, Long>{
 	@Query(value = "SELECT * FROM Cart WHERE product_id = ?1", nativeQuery = true)
 	Optional<Cart> findByProductId(long product_id);
 
-
 }
