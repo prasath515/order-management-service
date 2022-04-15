@@ -7,13 +7,11 @@ import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
 public class SwaggerConfiguration {
-	
-	  @Bean
-	  public OpenAPI springShopOpenAPI() {
-	      return new OpenAPI()
-	              .info(new Info().title("Cart API")
-	              .description("Ecart application")
-	              .version("v0.0.1"));
-	  }
+
+  @Bean
+  public OpenAPI swaggerConfig() {
+    return new OpenAPI()
+        .info(new Info().title("Cart API").description("Ecart application").version("v0.0.1"));
+  }
 
 }

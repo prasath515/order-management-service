@@ -22,34 +22,31 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/cart")
 @Tag(name = "Cart")
 public class CartContoller {
-	
-	@Autowired
-	private CartService cartService;
-	
-	@Operation(summary = "Add a item in cart")
-	@PostMapping(value="/item")
-	private ResponseEntity<CustomResponse> addProductToCart(@RequestBody Cart cart){
-		CustomResponse customResponse = cartService.addToCart(cart);
-		return new ResponseEntity<CustomResponse>(customResponse, HttpStatus.OK);
-	}
-	
-	@Operation(summary = "Get all the items in cart")
-	@GetMapping("/items")
-	private ResponseEntity<CartItems> getAllCartItems(){
-		CartItems cartItems = cartService.fetchCartItems();
-		return new ResponseEntity<CartItems>(cartItems, HttpStatus.OK);
-	}
-	
-	@Operation(summary = "Empty the cart")
-	@PostMapping("/items")
-	private ResponseEntity<CustomResponse> emptyCart(@RequestBody CartEmptyAction action){
-		return new ResponseEntity<CustomResponse>(cartService.clearCart(action), HttpStatus.OK);
-	}
-	
-	@Operation(summary = "Get total amount")
-	@GetMapping(value = "/checkout-value")
-	private ResponseEntity<CustomResponse> getTotalAmount(@RequestParam long postal_code){
-		CustomResponse cartItems = cartService.calculatePrice(postal_code);
-		return new ResponseEntity<CustomResponse>(cartItems, HttpStatus.OK);
-	}
+
+  @Autowired
+  private CartService cartService;
+
+  @Operation(summary = "Add a item in cart")
+  @PostMapping(value = "/item")
+  private ResponseEntity<CustomResponse> addProductToCart(@RequestBody Cart cart) {
+    return new ResponseEntity<CustomResponse>(cartService.addToCart(cart), HttpStatus.OK);
+  }
+
+  @Operation(summary = "Get all the items in cart")
+  @GetMapping("/items")
+  private ResponseEntity<CartItems> getAllCartItems() {
+    return new ResponseEntity<CartItems>(cartService.fetchCartItems(), HttpStatus.OK);
+  }
+
+  @Operation(summary = "Empty the cart")
+  @PostMapping("/items")
+  private ResponseEntity<CustomResponse> emptyCart(@RequestBody CartEmptyAction action) {
+    return new ResponseEntity<CustomResponse>(cartService.clearCart(action), HttpStatus.OK);
+  }
+
+  @Operation(summary = "Get total amount")
+  @GetMapping(value = "/checkout-value")
+  private ResponseEntity<CustomResponse> getTotalAmount(@RequestParam long postal_code) {
+    return new ResponseEntity<CustomResponse>(cartService.calculatePrice(postal_code), HttpStatus.OK);
+  }
 }
